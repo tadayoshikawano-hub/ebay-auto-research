@@ -1,9 +1,11 @@
-from config.settings import SLACK_BOT_TOKEN, SLACK_CHANNEL
-from modules.slack_notify import SlackNotifier
-from modules.google_sheet import GoogleSheet
-from modules.ebay_scraper import EbayScraper
-from modules.supabase_db import insert_item  # ← 追加
-from datetime import datetime
+import os
+
+SLACK_BOT_TOKEN = os.getenv("SLACK_TOKEN")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+EBAY_SEARCH_URL = os.getenv("EBAY_SEARCH_URL")
+
 
 
 def main():
