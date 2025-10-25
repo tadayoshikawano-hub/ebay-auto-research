@@ -1,53 +1,31 @@
 import os
+from datetime import datetime
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 
+# ==== 環境変数読み込み ====
 SLACK_BOT_TOKEN = os.getenv("SLACK_TOKEN")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-EBAY_SEARCH_URL = os.getenv("EBAY_SEARCH_URL")
 
-
-
-def main():
-    notifier = SlackNotifier(SLACK_BOT_TOKEN)
-    notifier.send_message(SLACK_CHANNEL, "🔍 eBayスクレイピング開始...")
-
-    sheet = GoogleSheet("eBayリサーチ管理シート")
-    scraper = EbayScraper()
-
+# ==== Slack通知関数 ====
+def send_slack_message(message):
     try:
-        items = scraper.search_sold_items("pokemon card", max_items=10)
+        client = WebClient(token=SLACK_BOT_TOKEN)
+        client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
+        print(f"✅ Slack通知成功: {message}")
+    except SlackApiError as e:
+        print(f"⚠️ Slack通知失敗: {e.response['error']}")
 
-        if not items:
-            notifier.send_message(SLACK_CHANNEL, "⚠️ 商品が見つかりませんでした。")
-            return
+# ==== メイン処理 ====
+def main():
+    send_slack_message("🔍 eBayスクレイピング（テストモード）を開始します。")
 
-        for item in items:
-            title = item["title"]
-            price = item["price"]
-            url = item["url"]
+    # 仮のテスト処理
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"現在時刻: {now}")
 
-            # ✅ Googleスプレッド書き込み
-            sheet.write_row([
-                "", title, "", "ポケカ", "", url, "",
-                price, "", "", "", "", "", "", "", "仕入候補", ""
-            ])
-
-            # ✅ Supabaseへ保存
-            insert_item(
-                title=title,
-                price=price,
-                profit=0,  # 後で利益計算ロジック追加予定
-                date=datetime.now().isoformat(),
-                source="eBay"
-            )
-
-        notifier.send_message(SLACK_CHANNEL, f"✅ {len(items)}件の商品を取得＆Supabaseへ保存しました！")
-
-    except Exception as e:
-        notifier.send_message(SLACK_CHANNEL, f"❌ エラー発生: {e}")
-        raise
-
+    # 完了通知
+    send_slack_message("✅ GitHub ActionsからのSlack通知テスト完了！")
 
 if __name__ == "__main__":
     main()
