@@ -1,0 +1,21 @@
+# Slack通知
+slack_sdk
+
+# 環境変数管理
+python-dotenv
+
+# 通信・スクレイピング
+requests
+beautifulsoup4
+selenium
+webdriver-manager
+
+# Googleスプレッドシート
+gspread
+oauth2client
+
+# Supabase連携
+supabase
+
+# その他依存関係
+certifi
