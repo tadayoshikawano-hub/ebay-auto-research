@@ -43,3 +43,8 @@ jobs:
           SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
         run: |
           python trend_report.py
+
+      - name: 💰 利益商品AIレポート
+        run: |
+          python ai_profitable_items.py
+
