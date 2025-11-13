@@ -32,7 +32,7 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
         run: |
-          python jp_pokemon_sales_no_sort.py
+           python trend_report.py
 
       - name: 📊 市場変化レポート生成＆Slack通知
         env:
