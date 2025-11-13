@@ -83,7 +83,7 @@ def fetch_all_items(category_id="183454", limit=100, max_pages=10):
 # ===============================
 # ⑤ Supabaseに保存
 # ===============================
-def save_sales_data(category, total, avg, median, top_keywords, top_characters):
+def save_sales_data(category, total, avg, median, min_price, top_keywords, top_characters):
     """Supabaseに分析結果を保存"""
     if not supabase:
         print("⚠️ Supabase接続情報が設定されていません。.envを確認してください。")
@@ -96,6 +96,7 @@ def save_sales_data(category, total, avg, median, top_keywords, top_characters):
             "total_sales": total,
             "avg_price": avg,
             "median_price": median,
+            "min_price": min_price,
             "top_keywords": top_keywords,
             "top_characters": top_characters
         }
