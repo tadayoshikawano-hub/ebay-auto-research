@@ -47,4 +47,7 @@ jobs:
       - name: 💰 利益商品AIレポート
         run: |
           python ai_profitable_items.py
+      - name: 💹 AIトレンド利益分析レポート
+        run: |
+          python ai_profitable_items_trend.py
 
